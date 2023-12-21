@@ -15,7 +15,7 @@ namespace CV_Web.Controllers
         public ProfileController()
         {
             _gitHubClient = new GitHubClient(new ProductHeaderValue("MyApp"));
-            _gitHubClient.Credentials = new Credentials("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");
+            _gitHubClient.Credentials = new Credentials("github-personal-access-token");
         }
 
         public async Task<IActionResult> Index()
