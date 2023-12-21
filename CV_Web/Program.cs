@@ -9,6 +9,8 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddTransient<Context>();
 builder.Services.AddTransient<IProfileRepository, ProfileRepository>();
+builder.Services.AddHttpClient();
+
 
 var app = builder.Build();
 

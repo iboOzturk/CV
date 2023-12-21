@@ -1,6 +1,7 @@
-﻿
+﻿@model List<GitHubRepoDto>
 @{
     Layout = null;
+    HashSet<string> shownLanguages = new HashSet<string>();
 }
 
 <!DOCTYPE html>
@@ -16,12 +17,10 @@
         </div>
     </div>
     <!-- Spinner End -->
-
     <!-- Navbar Start -->
     @await Component.InvokeAsync("_NavbarViewComponentPartial")
 
     <!-- Navbar End -->
-
     <!-- Header Start -->
     <div class="container-fluid bg-light my-6 mt-0" id="home">
         <div class="container">
@@ -47,7 +46,6 @@
         </div>
     </div>
     <!-- Header End -->
-
     <!-- Video Modal Start -->
     <div class="modal modal-video fade" id="videoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -67,7 +65,6 @@
         </div>
     </div>
     <!-- Video Modal End -->
-   
     <!-- Expertise Start -->
     <div class="container-xxl py-6 pb-5" id="skill">
         <div class="container">
@@ -97,7 +94,7 @@
                                     <h6 class="font-weight-bold">80%</h6>
                                 </div>
                                 <div class="progress">
-                                    <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                             </div>
                             <div class="skill mb-4">
@@ -195,18 +192,7 @@
                                     <h6 class="mb-0">Tophane Mesleki ve Teknik Anadolu Lisesi</h6>
                                     <h7 class="mb-0">Bilişim Teknolojileri Alanı</h7>
                                 </div>
-                                <div class="col-sm-6">
-                                    <h5>Web Design</h5>
-                                    <hr class="text-primary my-2">
-                                    <p class="text-primary mb-1">2000 - 2045</p>
-                                    <h6 class="mb-0">Cambridge University</h6>
-                                </div>
-                                <div class="col-sm-6">
-                                    <h5>Apps Design</h5>
-                                    <hr class="text-primary my-2">
-                                    <p class="text-primary mb-1">2000 - 2045</p>
-                                    <h6 class="mb-0">Cambridge University</h6>
-                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -215,83 +201,75 @@
         </div>
     </div>
     <!-- Expertise End -->
-   
     <!-- Projects Start -->
     <div class="container-xxl py-6 pt-5" id="project">
         <div class="container">
             <div class="row g-5 mb-5 align-items-center wow fadeInUp" data-wow-delay="0.1s">
                 <div class="col-lg-6">
-                    <h1 class="display-5 mb-0">My Projects</h1>
+                    <h1 class="display-5 mb-0">Projeler</h1>
                 </div>
                 <div class="col-lg-6 text-lg-end">
                     <ul class="list-inline mx-n3 mb-0" id="portfolio-flters">
                         <li class="mx-3 active" data-filter="*">All Projects</li>
-                        <li class="mx-3" data-filter=".first">UI/UX Design</li>
-                        <li class="mx-3" data-filter=".second">Graphic Design</li>
+                        @foreach (var item in Model)
+                        {
+                            string langs = item.Language;
+                            if (langs != null)
+                            {
+                                string representedLangs = RepresentSpecialCharacters(langs);
+
+                                if (!shownLanguages.Contains(representedLangs))
+                                {
+                                    <li class="mx-3" data-filter=".@representedLangs">@item.Language</li>
+                                    shownLanguages.Add(representedLangs);
+                                }
+                            }
+                        }
                     </ul>
                 </div>
             </div>
             <div class="row g-4 portfolio-container wow fadeInUp" data-wow-delay="0.1s">
-                <div class="col-lg-4 col-md-6 portfolio-item first">
-                    <div class="portfolio-img rounded overflow-hidden">
-                        <img class="img-fluid" src="~/proman/img/project-1.jpg" alt="">
-                        <div class="portfolio-btn">
-                            <a class="btn btn-lg-square btn-outline-secondary border-2 mx-1" href="img/project-1.jpg" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
-                            <a class="btn btn-lg-square btn-outline-secondary border-2 mx-1" href=""><i class="fa fa-link"></i></a>
+                @foreach (var item in Model)
+                {
+                    string langs = item.Language;
+                    string representedLangs = langs != null ? RepresentSpecialCharacters(langs) : "";
+
+                    <div class="col-lg-4 col-md-6 portfolio-item @representedLangs">
+                        <div class="portfolio-img rounded overflow-hidden">
+                            <img class="img-fluid" src="~/proman/img/project-1.jpg" alt="">
+                            <div class="portfolio-btn">
+                                <h6 style="color:gold" class="description-overlay">
+                                    @((item.Description != null) ? item.Description : "Açıklama Yok")
+                                </h6>
+                                @if (!item.IsPrivate)
+                                {
+                                    <a class="btn btn-lg-square btn-outline-secondary border-2 mx-1" href="@item.HtmlUrl" target="_blank"><i class="fa fa-link"></i></a>
+
+                                }
+                                else
+                                {
+                                    <span style="color:gold">Gizli</span>
+                                }
+
+                                <p class="mb-0" style="color:gold">@item.Language</p>
+
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-direction: row; justify-content: space-between;">
+                            <h5>@item.Name</h5>
+                            <h6>@item.UpdatedAt.ToString("dd MMMM yyyy", System.Globalization.CultureInfo.GetCultureInfo("tr-TR"))</h6>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-6 portfolio-item second">
-                    <div class="portfolio-img rounded overflow-hidden">
-                        <img class="img-fluid" src="~/proman/img/project-2.jpg" alt="">
-                        <div class="portfolio-btn">
-                            <a class="btn btn-lg-square btn-outline-secondary border-2 mx-1" href="img/project-2.jpg" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
-                            <a class="btn btn-lg-square btn-outline-secondary border-2 mx-1" href=""><i class="fa fa-link"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 portfolio-item first">
-                    <div class="portfolio-img rounded overflow-hidden">
-                        <img class="img-fluid" src="~/proman/img/project-3.jpg" alt="">
-                        <div class="portfolio-btn">
-                            <a class="btn btn-lg-square btn-outline-secondary border-2 mx-1" href="img/project-3.jpg" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
-                            <a class="btn btn-lg-square btn-outline-secondary border-2 mx-1" href=""><i class="fa fa-link"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 portfolio-item second">
-                    <div class="portfolio-img rounded overflow-hidden">
-                        <img class="img-fluid" src="~/proman/img/project-4.jpg" alt="">
-                        <div class="portfolio-btn">
-                            <a class="btn btn-lg-square btn-outline-secondary border-2 mx-1" href="img/project-4.jpg" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
-                            <a class="btn btn-lg-square btn-outline-secondary border-2 mx-1" href=""><i class="fa fa-link"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 portfolio-item first">
-                    <div class="portfolio-img rounded overflow-hidden">
-                        <img class="img-fluid" src="~/proman/img/project-5.jpg" alt="">
-                        <div class="portfolio-btn">
-                            <a class="btn btn-lg-square btn-outline-secondary border-2 mx-1" href="img/project-5.jpg" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
-                            <a class="btn btn-lg-square btn-outline-secondary border-2 mx-1" href=""><i class="fa fa-link"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 portfolio-item second">
-                    <div class="portfolio-img rounded overflow-hidden">
-                        <img class="img-fluid" src="~/proman/img/project-6.jpg" alt="">
-                        <div class="portfolio-btn">
-                            <a class="btn btn-lg-square btn-outline-secondary border-2 mx-1" href="img/project-6.jpg" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
-                            <a class="btn btn-lg-square btn-outline-secondary border-2 mx-1" href=""><i class="fa fa-link"></i></a>
-                        </div>
-                    </div>
-                </div>
+
+
+
+                }
+
+
             </div>
         </div>
     </div>
     <!-- Projects End -->
-   
-    
     <!-- Contact Start -->
     <div class="container-xxl pb-5" id="contact">
         <div class="container py-5">
@@ -360,7 +338,6 @@
         </div>
     </div>
     <!-- Contact End -->
-   
     <!-- Copyright Start -->
     <div class="container-fluid bg-dark text-white py-4">
         <div class="container">
@@ -378,7 +355,6 @@
     </div>
     </div>
     <!-- Copyright End -->
-
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 
@@ -389,3 +365,42 @@
 </body>
 
 </html>
+
+@functions
+{
+    string RepresentSpecialCharacters(string input)
+    {
+        if (input == null)
+            return string.Empty;
+
+        // Özel karakterleri temsil eden harflerle değiştirme
+        input = input.Replace("+", "p")
+                     .Replace("#", "s")
+                     .Replace("-", "d")
+                     .Replace("*", "a")
+                     .Replace("/", "sl")
+                     // Ek özel karakter dönüşümleri buraya ekleyebilirsiniz.
+                     ;
+
+        return input;
+    }
+}
+
+<style>
+    .portfolio-img {
+        position: relative;
+    }
+
+    .description-overlay {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .portfolio-img:hover .description-overlay {
+        opacity: 1;
+    }
+</style>
