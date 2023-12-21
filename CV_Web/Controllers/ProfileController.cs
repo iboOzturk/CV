@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Octokit;
+using System.Net;
 using System.Net.Http;
 
 namespace CV_Web.Controllers
@@ -10,25 +11,44 @@ namespace CV_Web.Controllers
     {
         
         
-        private readonly GitHubClient _gitHubClient;
-        public ProfileController(GitHubClient gitHubClient)
-        {
-            _gitHubClient = gitHubClient;
-        }       
+        //private readonly GitHubClient _gitHubClient;
+        //public ProfileController(GitHubClient gitHubClient)
+        //{
+        //    _gitHubClient = gitHubClient;
+        //}       
 
-        public async Task<IActionResult> Index()
-        {           
-            var repos = _gitHubClient.Repository.GetAllForCurrent().Result;
-            var repositoryInfos = repos.OrderByDescending(x => x.UpdatedAt).Select(repo => new GitHubRepoDto
-            {
-                Name = repo.Name,
-                IsPrivate = repo.Private,
-                Description = repo.Description,
-                HtmlUrl = repo.HtmlUrl,
-                Language = repo.Language,
-                UpdatedAt = repo.UpdatedAt.DateTime
-            }).ToList();
-            return View(repositoryInfos);
+        public IActionResult Index()
+        {
+            var url = "https://api.github.com/users/iboozturk/repos";
+          
+
+            using (var webClient = new WebClient())
+             {
+                webClient.Headers.Add("User-Agent", "request");
+
+                try
+                {
+                    var rawJSON = webClient.DownloadString(url);
+                    var repos = JsonConvert.DeserializeObject<List<GitHubRepoDto>>(rawJSON).OrderByDescending(x=>x.Updated_At).ToList();
+                  
+                    return View(repos);
+                }
+                catch (WebException ex)
+                {
+                    var response = ex.Response as HttpWebResponse;
+
+                    if (response != null && response.StatusCode == HttpStatusCode.Forbidden)
+                    {
+                        // Handle 403 Forbidden error
+                    }
+                    throw;
+                }
+            }
+
+
+
+          
+
         }
     }
 }

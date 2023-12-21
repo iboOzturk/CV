@@ -243,7 +243,7 @@
                                 </h6>
                                 @if (!item.IsPrivate)
                                 {
-                                    <a class="btn btn-lg-square btn-outline-secondary border-2 mx-1" href="@item.HtmlUrl" target="_blank"><i class="fa fa-link"></i></a>
+                                    <a class="btn btn-lg-square btn-outline-secondary border-2 mx-1" href="@item.Html_Url" target="_blank"><i class="fa fa-link"></i></a>
 
                                 }
                                 else
@@ -257,7 +257,7 @@
                         </div>
                         <div style="display: flex; flex-direction: row; justify-content: space-between;">
                             <h5>@item.Name</h5>
-                            <h6>@item.UpdatedAt.ToString("dd MMMM yyyy", System.Globalization.CultureInfo.GetCultureInfo("tr-TR"))</h6>
+                            <h6>@item.Updated_At.ToString("dd MMMM yyyy", System.Globalization.CultureInfo.GetCultureInfo("tr-TR"))</h6>
                         </div>
                     </div>
 
