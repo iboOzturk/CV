@@ -8,15 +8,8 @@ using System.Net.Http;
 namespace CV_Web.Controllers
 {
     public class ProfileController : Controller
-    {
-        
-        
-        //private readonly GitHubClient _gitHubClient;
-        //public ProfileController(GitHubClient gitHubClient)
-        //{
-        //    _gitHubClient = gitHubClient;
-        //}       
-
+    {       
+         
         public IActionResult Index()
         {
             var url = "https://api.github.com/users/iboozturk/repos";
