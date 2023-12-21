@@ -1,8 +1,18 @@
 using CV_Web.Data;
 using CV_Web.Interfaces;
 using CV_Web.Repositories;
+using Octokit;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var gitHubAccessToken = builder.Configuration["GitHub:AccessToken"];
+
+
+var gitHubClient = new GitHubClient(new ProductHeaderValue("MyApp"));
+gitHubClient.Credentials = new Credentials(gitHubAccessToken);
+
+
+builder.Services.AddSingleton(gitHubClient);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

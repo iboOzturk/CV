@@ -11,23 +11,21 @@ namespace CV_Web.Controllers
         
         
         private readonly GitHubClient _gitHubClient;
-
-        public ProfileController()
+        public ProfileController(GitHubClient gitHubClient)
         {
-            _gitHubClient = new GitHubClient(new ProductHeaderValue("MyApp"));
-            _gitHubClient.Credentials = new Credentials("github-personal-access-token");
-        }
+            _gitHubClient = gitHubClient;
+        }       
 
         public async Task<IActionResult> Index()
-        {
-            var repos = await _gitHubClient.Repository.GetAllForCurrent();
-            var repositoryInfos = repos.OrderByDescending(x=>x.UpdatedAt).Select(repo => new GitHubRepoDto
+        {           
+            var repos = _gitHubClient.Repository.GetAllForCurrent().Result;
+            var repositoryInfos = repos.OrderByDescending(x => x.UpdatedAt).Select(repo => new GitHubRepoDto
             {
                 Name = repo.Name,
                 IsPrivate = repo.Private,
                 Description = repo.Description,
                 HtmlUrl = repo.HtmlUrl,
-                Language=repo.Language,
+                Language = repo.Language,
                 UpdatedAt = repo.UpdatedAt.DateTime
             }).ToList();
             return View(repositoryInfos);
