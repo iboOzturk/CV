@@ -38,6 +38,12 @@
                         </button>
                         <h5 class="ms-4 mb-0 d-none d-sm-block">Video Oynat</h5>
                     </div>
+                    <br />
+                    <br />
+                    <div class="d-flex pt-2">
+                        <a class="btn btn-square btn-primary me-2" href="https://github.com/iboOzturk" target="_blank"><i class="fab fa-github"></i></a>
+                        <a class="btn btn-square btn-primary me-2" href="https://www.linkedin.com/in/ibrahim-%C3%B6zt%C3%BCrk-167384226/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
                 </div>
                 <div class="col-lg-6">
                     <img class="img-fluid" src="~/images/ibopp.png" alt="">
@@ -210,7 +216,7 @@
                 </div>
                 <div class="col-lg-6 text-lg-end">
                     <ul class="list-inline mx-n3 mb-0" id="portfolio-flters">
-                        <li class="mx-3 active" data-filter="*">All Projects</li>
+                        <li class="mx-3 active" data-filter="*">Tüm Projeler</li>
                         @foreach (var item in Model)
                         {
                             string langs = item.Language;
@@ -236,7 +242,7 @@
 
                     <div class="col-lg-4 col-md-6 portfolio-item @representedLangs">
                         <div class="portfolio-img rounded overflow-hidden">
-                            <img class="img-fluid" src="~/proman/img/project-1.jpg" alt="">
+                            <img style="width:408px;height:408px;object-fit:contain" class="img-fluid" src="~/images/@(item.Name).png" alt="">
                             <div class="portfolio-btn">
                                 <h6 style="color:gold" class="description-overlay">
                                     @((item.Description != null) ? item.Description : "Açıklama Yok")
