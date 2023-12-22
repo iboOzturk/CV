@@ -46,7 +46,9 @@
     transition: .5s;
 }
 
-.btn.btn-primary,
+    .btn.btn-primary {
+        background-color: orange;
+    },
 .btn.btn-secondary {
     color: #FFFFFF;
 }
