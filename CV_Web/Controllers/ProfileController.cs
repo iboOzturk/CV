@@ -1,15 +1,21 @@
 ﻿using CV_Web.DTOS;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Octokit;
 using System.Net;
-using System.Net.Http;
+using Telegram.Bot;
 
 namespace CV_Web.Controllers
 {
     public class ProfileController : Controller
-    {       
-         
+    {
+        private readonly ITelegramBotClient _telegramBotClient;
+        private const string BotToken = "telegram-bot-token";
+        public ProfileController()
+        {
+            _telegramBotClient = new TelegramBotClient(BotToken);
+        }
+
+
         public IActionResult Index()
         {
             var url = "https://api.github.com/users/iboozturk/repos";
@@ -36,12 +42,15 @@ namespace CV_Web.Controllers
                     }
                     throw;
                 }
-            }
+            }          
 
-
-
-          
-
+        }
+     
+        public async Task<IActionResult> SendMessage(string chatId, string name, string email, string subject, string message)
+        {
+            string fullMessage = $"İsim: {name}\nE-posta: {email}\nKonu: {subject}\nMesaj: {message}";
+            await _telegramBotClient.SendTextMessageAsync(chatId, fullMessage);
+            return View(); 
         }
     }
 }

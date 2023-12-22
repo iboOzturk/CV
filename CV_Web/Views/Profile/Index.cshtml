@@ -277,33 +277,34 @@
     </div>
     <!-- Projects End -->
     <!-- Contact Start -->
+
     <div class="container-xxl pb-5" id="contact">
         <div class="container py-5">
             <div class="row g-5 mb-5 wow fadeInUp" data-wow-delay="0.1s">
                 <div class="col-lg-6">
-                    <h1 class="display-5 mb-0">Let's Work Together</h1>
+                    <h1 class="display-5 mb-0">İletişim Bilgileri</h1>
                 </div>
                 <div class="col-lg-6 text-lg-end">
-                    <a class="btn btn-primary py-3 px-5" href="">Say Hello</a>
+                    <a class="btn btn-primary py-3 px-5" href="">Merhaba De</a>
                 </div>
             </div>
             <div class="row g-5">
                 <div class="col-lg-5 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <p class="mb-2">My office:</p>
-                    <h3 class="fw-bold">123 Street, New York, USA</h3>
+                    <p class="mb-2">Adresim:</p>
+                    <h3 class="fw-bold">Yıldırım/Bursa Türkiye</h3>
                     <hr class="w-100">
-                    <p class="mb-2">Call me:</p>
-                    <h3 class="fw-bold">+012 345 6789</h3>
+                    <p class="mb-2">Telefon Numaram:</p>
+                    <h3 class="fw-bold">+90 505 971 28 16</h3>
                     <hr class="w-100">
-                    <p class="mb-2">Mail me:</p>
-                    <h3 class="fw-bold">info@example.com</h3>
+                    <p class="mb-2">Mail Adresim:</p>
+                    <h3 class="fw-bold">ozturk.ibo@outlook.com</h3>
                     <hr class="w-100">
-                    <p class="mb-2">Follow me:</p>
+                    <p class="mb-2">Sosyal Medya:</p>
                     <div class="d-flex pt-2">
-                        <a class="btn btn-square btn-primary me-2" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-square btn-primary me-2" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-square btn-primary me-2" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-square btn-primary me-2" href=""><i class="fab fa-linkedin-in"></i></a>
+                        @* <a class="btn btn-square btn-primary me-2" href=""><i class="fab fa-twitter"></i></a> *@
+                        <a class="btn btn-square btn-primary me-2" href="https://www.facebook.com/abrahamredo7?locale=tr_TR" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-square btn-primary me-2" href="https://www.youtube.com/channel/UCcrxY3qtEIihIEJQ0KXBlMA" target="_blank"><i class="fab fa-youtube"></i></a>
+                        <a class="btn btn-square btn-primary me-2" href="https://www.instagram.com/ibo.ozturk7/" target="_blank"><i class="fab fa-instagram"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-7 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
@@ -331,18 +332,20 @@
                             <div class="col-12">
                                 <div class="form-floating">
                                     <textarea class="form-control" placeholder="Leave a message here" id="message" style="height: 100px"></textarea>
-                                    <label for="message">Message</label>
+                                    <label for="message">Mesaj</label>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <button class="btn btn-primary py-3 px-5" type="submit">Send Message</button>
                             </div>
+                            <a href="#" onclick="sendMessage()" class="btn btn-primary">Mesaj At</a>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
     <!-- Contact End -->
     <!-- Copyright Start -->
     <div class="container-fluid bg-dark text-white py-4">
@@ -410,3 +413,28 @@
         opacity: 1;
     }
 </style>
+
+<script>
+    function sendMessage() {
+        // Kullanıcıdan alınan chatId ve message değerlerini al
+        var chatId = "1489077336";
+        var message = document.getElementById('message').value;
+        var name = document.getElementById('name').value;
+        var email = document.getElementById('email').value;
+        var subject = document.getElementById('subject').value;
+
+        // Eğer chatId veya message boşsa işlemi durdur
+        if (!name || !email || !subject || !message) {
+            alert('Lütfen tüm alanları doldurun.');
+            return;
+        }
+        if (confirm("Mesajı göndermek istediğinize emin misiniz?")) {
+            fetch('/Profile/SendMessage/?chatId=' + encodeURIComponent(chatId) + '&name=' + encodeURIComponent(name) +
+                    '&email=' + encodeURIComponent(email) +
+                '&subject=' + encodeURIComponent(subject) + '&message=' + encodeURIComponent(message), {
+                method: 'GET' 
+            })
+            
+        }
+    }
+</script>
